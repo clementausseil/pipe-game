@@ -5,7 +5,11 @@
  * @author (your name)
  * @version (a version number or a date)
  */
-public class GUI
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.JButton;
+public class GUI //extends JFrame implements ActionListener, MouseListener
 {
     // instance variables - replace the example below with your own
     

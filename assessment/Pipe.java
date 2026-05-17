@@ -24,6 +24,17 @@ public class Pipe
         this.type = type;
     }
     
+    //# Getter methods
+    public char getShape(){return(this.shape);}
+    public char getRotation(){return(this.rotation);}
+    public int getX(){return(this.xPosition);}
+    public int getY(){return(this.yPosition);}
+    public String getType(){return(this.type);}
     
-    
+    //# Setter methods
+    public void setShape(char newShape){this.shape=newShape;}
+    public void setX(int newX){this.xPosition=newX;}
+    public void setY(int newY){this.yPosition=newY;}
+    public void setRotation(char newRotation){this.rotation=newRotation;}
+    public void setType(String newType){this.type=newType;}
 }
