@@ -8,7 +8,7 @@
 public class main
 {
     
-
+    static GUI gui = new GUI ();
     /**
      * Constructor for objects of class main
      */
