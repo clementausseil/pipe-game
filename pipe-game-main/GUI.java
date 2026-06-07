@@ -11,9 +11,9 @@ import java.awt.event.*;
 import javax.swing.JButton;
 public class GUI extends JFrame implements ActionListener,MouseListener
 {
-    public final int GRID_HEIGHT = 7;
-    public final int GRID_WIDTH = 7;
-    int[][] grid = new int[GRID_WIDTH][GRID_HEIGHT];
+    public final int GRID_SIZE = 7;
+    
+    int[][] grid = new int[GRID_SIZE][GRID_SIZE];
     
     public String[][] level1 = new String[8][8];
     
@@ -67,7 +67,7 @@ public class GUI extends JFrame implements ActionListener,MouseListener
         JPanel borderPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 50));
         //borderPanel.setBackground(Color.pink);
         
-        gridPanel = new JPanel(new GridLayout(GRID_WIDTH, GRID_HEIGHT));
+        gridPanel = new JPanel(new GridLayout(GRID_SIZE, GRID_SIZE));
         gridPanel.setBounds(0,0,300,300);
         
         //gamePanel.setLayout(new FlowLayout(FlowLayout.CENTER,5,5));
@@ -107,11 +107,14 @@ public class GUI extends JFrame implements ActionListener,MouseListener
 
     public void actionPerformed(ActionEvent e){
         String cmd = e.getActionCommand();
-
+        System.out.println(cmd);
         if(cmd == "story"){
             createStoryDialogBox();
         }else if (cmd=="tutorial"){
             createTutoDialogBox();
+        }else {
+            String[] coords = e.getActionCommand().split(",");
+            System.out.println("button pressed at "+coords[0]+","+ coords[1]);
         }
     }
     
@@ -174,15 +177,17 @@ public class GUI extends JFrame implements ActionListener,MouseListener
         
         initialiseLevel1();
         
-        for(int x= 1;x<=GRID_WIDTH;x++){
-            for (int y = 1; y <= GRID_HEIGHT; y++) {
+        for(int x= 1;x<=GRID_SIZE;x++){
+            for (int y = 1; y <= GRID_SIZE; y++) {
                 JButton button = new JButton();
+                button.addActionListener(this);
+                button.setActionCommand(x+","+y);
                 Pipe pipe = new Pipe("e",x,y,"n");
                 
-                if(level1[y][x] == "sink"){
+                if(level1[x][y] == "sink"){
                     button.setIcon(scaledSink);
                     pipe.setShape("o");
-                }else if(level1[y][x] == "source"){
+                }else if(level1[x][y] == "source"){
                     button.setIcon(scaledSource);
                     pipe.setShape("x");
                 }
@@ -193,8 +198,8 @@ public class GUI extends JFrame implements ActionListener,MouseListener
         }
         
         
-        // for(int x=0;x<(GRID_WIDTH*50);x+=50){
-            // for(int y=0;y<(GRID_HEIGHT*50);y+=50){
+        // for(int x=0;x<(GRID_SIZE*50);x+=50){
+            // for(int y=0;y<(GRID_SIZE*50);y+=50){
                 
             // }  
         // }
