@@ -10,12 +10,12 @@ public class Pipe
     String shape;//T,L,I or O (sources and sinks)
     int xPosition;
     int yPosition;
-    String rotation; //N,E,S,W
+    int rotation; //in degrees (0,90,180,270)
     String type;//pipe, source or sink
     /**
      * Constructor for objects of class Pipe
      */
-    public Pipe(String shape, int x, int y, String rotation/*,String type*/)
+    public Pipe(String shape, int x, int y, int rotation/*,String type*/)
     {
         this.shape = shape;
         this.xPosition = x;
@@ -26,7 +26,7 @@ public class Pipe
     
     //# Getter methods
     public String getShape(){return(this.shape);}
-    public String getRotation(){return(this.rotation);}
+    public int getRotation(){return(this.rotation);}
     public int getX(){return(this.xPosition);}
     public int getY(){return(this.yPosition);}
     //public String getType(){return(this.type);}
@@ -35,6 +35,6 @@ public class Pipe
     public void setShape(String newShape){this.shape=newShape;}
     public void setX(int newX){this.xPosition=newX;}
     public void setY(int newY){this.yPosition=newY;}
-    public void setRotation(String newRotation){this.rotation=newRotation;}
+    public void setRotation(int newRotation){this.rotation=newRotation;}
     //public void setType(String newType){this.type=newType;}
 }

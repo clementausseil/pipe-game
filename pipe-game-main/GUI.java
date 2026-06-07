@@ -158,8 +158,13 @@ public class GUI extends JFrame implements ActionListener,MouseListener
     }
 
     public void initialiseLevel1(){
+        level1[1][1] = "source"; 
+        level1[1][2] = "source"; 
+        level1[1][3] = "source"; 
+        level1[1][4] = "sink"; 
         level1[5][3] = "sink"; 
         level1[4][3] = "source"; 
+        level1[3][3] = "sink"; 
     }
     
     
@@ -182,7 +187,7 @@ public class GUI extends JFrame implements ActionListener,MouseListener
                 JButton button = new JButton();
                 button.addActionListener(this);
                 button.setActionCommand(x+","+y);
-                Pipe pipe = new Pipe("e",x,y,"n");
+                Pipe pipe = new Pipe("e",x,y,0);
                 
                 if(level1[x][y] == "sink"){
                     button.setIcon(scaledSink);
