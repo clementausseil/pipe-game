@@ -9,13 +9,22 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.JButton;
+import java.util.Random;
+
+import java.awt.Graphics;
 public class GUI extends JFrame implements ActionListener,MouseListener
 {
     public final int GRID_SIZE = 7;
+    public final int SQUARE_SIZE = 80;
     
     int[][] grid = new int[GRID_SIZE][GRID_SIZE];
     
     public String[][] level1 = new String[8][8];
+    
+    public int[] rotations = {0,90,180,270};
+    
+    
+    
     
     
     JMenuBar menuBar;
@@ -134,9 +143,7 @@ public class GUI extends JFrame implements ActionListener,MouseListener
         }
     }    
     
-    protected void paintComponent(Graphics g){
-        //super.paintComponent(g);
-    }
+    
     
     
 
@@ -185,12 +192,18 @@ public class GUI extends JFrame implements ActionListener,MouseListener
         Dimension buttonSize = new Dimension(80, 80); 
         
         ImageIcon sourceImage = new ImageIcon(source);
-        Image mySource = sourceImage.getImage().getScaledInstance(80,80, Image.SCALE_SMOOTH); 
+        Image mySource = sourceImage.getImage().getScaledInstance(SQUARE_SIZE,SQUARE_SIZE, Image.SCALE_SMOOTH); 
         ImageIcon scaledSource = new ImageIcon(mySource);
         
         ImageIcon sinkImage = new ImageIcon(sink);
-        Image mySink = sinkImage.getImage().getScaledInstance(80,80, Image.SCALE_SMOOTH); 
+        Image mySink = sinkImage.getImage().getScaledInstance(SQUARE_SIZE,SQUARE_SIZE, Image.SCALE_SMOOTH); 
         ImageIcon scaledSink = new ImageIcon(mySink);
+        
+        Random rand = new Random();
+        int imageCenter = SQUARE_SIZE / 2;
+        
+        
+        
         
         initialiseLevel1();
         
@@ -199,15 +212,29 @@ public class GUI extends JFrame implements ActionListener,MouseListener
                 JButton button = new JButton();
                 button.addActionListener(this);
                 button.setActionCommand(x+","+y);
-                Pipe pipe = new Pipe("e",x,y,0);
+                
+                int randomIndex = rand.nextInt(4);
+                int randomDirection = rotations[randomIndex];
+                
+                Pipe pipe = new Pipe("e",x,y,randomDirection);
                 
                 if("sink".equals(level1[x][y])){
                     button.setIcon(scaledSink);
                     pipe.setShape("o");
+                    
                 }else if("source".equals(level1[x][y])){
+                    
                     button.setIcon(scaledSource);
                     pipe.setShape("x");
                 }
+                
+                if (pipe.getRotation() == 0){
+                    
+                }
+                
+                
+                
+                
                 
                 button.setPreferredSize(buttonSize);
                 gridPanel.add(button);
@@ -221,4 +248,23 @@ public class GUI extends JFrame implements ActionListener,MouseListener
             // }  
         // }
     }
+    public void paint(Graphics g){
+        super.paint(g);
+        Graphics2D g2d = (Graphics2D)g.create();
+        
+        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        
+        
+        
+        
+    }
+    
+    void rotateRandom(){
+        //.rotate(Math.toRadians(randomDirection),imageCenter,imageCenter);
+    }
+    
+    
+    
+    
+    
 }
