@@ -108,15 +108,21 @@ public class GUI extends JFrame implements ActionListener,MouseListener
     public void actionPerformed(ActionEvent e){
         String cmd = e.getActionCommand();
         System.out.println(cmd);
-        if(cmd == "story"){
+        if(cmd.equals("story")){
             createStoryDialogBox();
-        }else if (cmd=="tutorial"){
+        }else if (cmd.equals("tutorial")){
             createTutoDialogBox();
         }else {
             String[] coords = e.getActionCommand().split(",");
             System.out.println("button pressed at "+coords[0]+","+ coords[1]);
         }
     }
+    
+    
+    
+    
+    
+    
     
     public boolean buttonPressed(ActionEvent b){
         String cmd = b.getActionCommand();
@@ -127,6 +133,12 @@ public class GUI extends JFrame implements ActionListener,MouseListener
             return(false);
         }
     }    
+    
+    protected void paintComponent(Graphics g){
+        //super.paintComponent(g);
+    }
+    
+    
 
     void createStoryDialogBox(){
         //creating dialog box
@@ -189,10 +201,10 @@ public class GUI extends JFrame implements ActionListener,MouseListener
                 button.setActionCommand(x+","+y);
                 Pipe pipe = new Pipe("e",x,y,0);
                 
-                if(level1[x][y] == "sink"){
+                if("sink".equals(level1[x][y])){
                     button.setIcon(scaledSink);
                     pipe.setShape("o");
-                }else if(level1[x][y] == "source"){
+                }else if("source".equals(level1[x][y])){
                     button.setIcon(scaledSource);
                     pipe.setShape("x");
                 }
