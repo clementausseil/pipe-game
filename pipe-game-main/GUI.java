@@ -1,4 +1,3 @@
-
 /**
  * Write a description of class GUI here.
  *
@@ -92,11 +91,9 @@ public class GUI extends JFrame implements ActionListener,MouseListener
         ImageIcon sinkImage = new ImageIcon(sink);
         sinkLabel = new JLabel(sinkImage);
         
+        Level level1 = new Level(initialiseLevel1());
+        grid(level1.getLayout());
         
-        
-        grid();
-        //gridPanel.add(sourceLabel);
-        //grid();
         
         //dunno what this does but I guess its important
         this.pack();
@@ -176,7 +173,10 @@ public class GUI extends JFrame implements ActionListener,MouseListener
         box.setTitle("how to play");
     }
 
-    public void initialiseLevel1(){
+    public String[][] initialiseLevel1(){
+        String[][] level1 = new String[GRID_SIZE][GRID_SIZE];
+        
+        
         level1[1][1] = "source"; 
         level1[1][2] = "source"; 
         level1[1][3] = "source"; 
@@ -184,11 +184,13 @@ public class GUI extends JFrame implements ActionListener,MouseListener
         level1[5][3] = "sink"; 
         level1[4][3] = "source"; 
         level1[3][3] = "sink"; 
+        
+        return level1;
     }
     
     
     
-    public void grid (){
+    public void grid (String[][] level){
         Dimension buttonSize = new Dimension(80, 80); 
         
         ImageIcon sourceImage = new ImageIcon(source);
@@ -202,7 +204,8 @@ public class GUI extends JFrame implements ActionListener,MouseListener
         Random rand = new Random();
         int imageCenter = SQUARE_SIZE / 2;
         
-        
+        Pipe[][] pipes = new Pipe[GRID_SIZE][GRID_SIZE];
+        JButton[][] buttons = new JButton[GRID_SIZE][GRID_SIZE];
         
         
         initialiseLevel1();
@@ -216,19 +219,20 @@ public class GUI extends JFrame implements ActionListener,MouseListener
                 int randomIndex = rand.nextInt(4);
                 int randomDirection = rotations[randomIndex];
                 
-                Pipe pipe = new Pipe("e",x,y,randomDirection);
+                buttons[x][y] = button;
+                pipes[x][y] = new Pipe("e",x,y,randomDirection);
                 
                 if("sink".equals(level1[x][y])){
                     button.setIcon(scaledSink);
-                    pipe.setShape("o");
+                    pipes[x][y].setShape("o");
                     
                 }else if("source".equals(level1[x][y])){
                     
                     button.setIcon(scaledSource);
-                    pipe.setShape("x");
+                    pipes[x][y].setShape("x");
                 }
                 
-                if (pipe.getRotation() == 0){
+                if (pipes[x][y].getRotation() == 0){
                     
                 }
                 
