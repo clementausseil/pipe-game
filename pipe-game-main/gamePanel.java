@@ -16,6 +16,6 @@ public class gamePanel extends JPanel
     }
 
     protected void paintComponent(Graphics g){
-        super.paintComponent(g);    
+        super.paintComponent(g); 
     }
 }

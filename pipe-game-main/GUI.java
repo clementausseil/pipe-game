@@ -22,7 +22,7 @@ public class GUI extends JFrame implements ActionListener,MouseListener
     
     public int[] rotations = {0,90,180,270};
     
-    
+    gamePanel panel = new gamePanel();
     
     
     
@@ -210,8 +210,8 @@ public class GUI extends JFrame implements ActionListener,MouseListener
         
         initialiseLevel1();
         
-        for(int x= 1;x<=GRID_SIZE;x++){
-            for (int y = 1; y <= GRID_SIZE; y++) {
+        for(int x= 0;x<=GRID_SIZE-1;x++){
+            for (int y = 0; y <= GRID_SIZE-1; y++) {
                 JButton button = new JButton();
                 button.addActionListener(this);
                 button.setActionCommand(x+","+y);
@@ -222,19 +222,18 @@ public class GUI extends JFrame implements ActionListener,MouseListener
                 buttons[x][y] = button;
                 pipes[x][y] = new Pipe("e",x,y,randomDirection);
                 
-                if("sink".equals(level1[x][y])){
+                if("sink".equals(level[x][y])){
                     button.setIcon(scaledSink);
                     pipes[x][y].setShape("o");
                     
-                }else if("source".equals(level1[x][y])){
+                }else if("source".equals(level[x][y])){
                     
                     button.setIcon(scaledSource);
                     pipes[x][y].setShape("x");
                 }
                 
-                if (pipes[x][y].getRotation() == 0){
-                    
-                }
+                pipes[x][y].setRotation(randomDirection);
+
                 
                 
                 

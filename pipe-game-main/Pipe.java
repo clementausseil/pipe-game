@@ -37,4 +37,8 @@ public class Pipe
     public void setY(int newY){this.yPosition=newY;}
     public void setRotation(int newRotation){this.rotation=newRotation;}
     //public void setType(String newType){this.type=newType;}
+    
+    public void rotate(){
+        
+    }
 }
