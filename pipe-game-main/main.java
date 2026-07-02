@@ -1,8 +1,8 @@
 
 /**
- * Write a description of class main here.
+ * 
  *
- * @author (your name)
+ * @author Clement Ausseil
  * @version (a version number or a date)
  */
 public class main
