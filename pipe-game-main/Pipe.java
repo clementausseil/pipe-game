@@ -39,6 +39,25 @@ public class Pipe
     //public void setType(String newType){this.type=newType;}
     
     public void rotate(){
-        
+        this.rotation = (this.rotation+90)%360;
     }
+    
+    public boolean[] getConnections() {
+    boolean[] base;
+    // Order: N, E, S, W
+    switch (shape) {
+        case "I": base = new boolean[]{true, false, true, false}; break;   // N-S
+        case "L": base = new boolean[]{false, true, true, false}; break;  // N-E
+        case "T": base = new boolean[]{true, true, false, true}; break;   // N-E-S
+        case "O": base = new boolean[]{true, false, false, false}; break; // sink: 1 opening
+        case "X": base = new boolean[]{true, true, false, true}; break; // source: 1 opening
+        default: base = new boolean[]{false, false, false, false};
+    }
+    int shift = rotation / 90; // how many 90° steps
+    boolean[] rotated = new boolean[4];
+    for (int i = 0; i < 4; i++) {
+        rotated[(i + shift) % 4] = base[i];
+    }
+    return rotated;
+}
 }

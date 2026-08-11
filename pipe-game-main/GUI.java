@@ -62,13 +62,13 @@ public class GUI extends JFrame implements ActionListener,MouseListener
         //mouse listener
         addMouseListener(this);
 
-        JFrame frame = new JFrame ("cuh");
-        frame.setSize(600, 400);
-        frame.setLayout(null);
+        // JFrame frame = new JFrame ("cuh");
+        // frame.setSize(600, 400);
+        // frame.setLayout(null);
 
         //panels
         
-        
+        this.add(panel);
 
         //declare images
         
@@ -97,32 +97,14 @@ public class GUI extends JFrame implements ActionListener,MouseListener
             createStoryDialogBox();
         }else if (cmd.equals("tutorial")){
             createTutoDialogBox();
-        }else {
-            String[] coords = e.getActionCommand().split(",");
-            System.out.println("button pressed at "+coords[0]+","+ coords[1]);
         }
+        //else {
+            //String[] coords = e.getActionCommand().split(",");
+            //System.out.println("button pressed at "+coords[0]+","+ coords[1]);
+        //}
     }
     
     
-    
-    
-    
-    
-    
-    public boolean buttonPressed(ActionEvent b){
-        String cmd = b.getActionCommand();
-        
-        if(cmd != null){
-            return (true);
-        }else{
-            return(false);
-        }
-    }    
-    
-    
-    
-    
-
     void createStoryDialogBox(){
         //creating dialog box
         JDialog box =new JDialog(this);
