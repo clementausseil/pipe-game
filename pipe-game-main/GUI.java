@@ -80,10 +80,10 @@ public class GUI extends JFrame implements ActionListener,MouseListener
         this.setVisible(true);
     }
 
-    public void mouseEntered(MouseEvent e){System.out.println("enter");}
-    public void mouseExited(MouseEvent e){System.out.println("exit");}
-    public void mousePressed(MouseEvent e){System.out.println("press");}
-    public void mouseReleased(MouseEvent e){System.out.println("release");}
+    public void mouseEntered(MouseEvent e){/*System.out.println("enter");*/}
+    public void mouseExited(MouseEvent e){/*System.out.println("exit");*/}
+    public void mousePressed(MouseEvent e){/*System.out.println("press");*/}
+    public void mouseReleased(MouseEvent e){/*System.out.println("release");*/}
     public void mouseClicked(MouseEvent e){
         int mouseX = e.getX();
         int mouseY = e.getY();

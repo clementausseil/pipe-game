@@ -162,45 +162,35 @@ public class gamePanel extends JPanel implements ActionListener
         for(int x= 0;x<=GRID_SIZE-1;x++){
             for (int y = 0; y <= GRID_SIZE-1; y++) {
                 JButton button = new JButton();
-
                 button.setActionCommand(x+","+y);
                 button.addActionListener(this);
 
                 int randomIndex = rand.nextInt(4);
                 int randomRotation = randomIndex*90;
-                //int randomDirection = rotations[randomIndex];
 
                 buttons[x][y] = button;
-                pipes[x][y] = new Pipe("e",x,y,randomRotation);
+                pipes[x][y] = new Pipe("e", x, y, randomRotation);
 
-                if("sink".equals(level[x][y])){
-                    button.setIcon(scaledSink);
-                    baseIcons[x][y] = scaledSink;
-                    pipes[x][y].setShape("o");
-
-                }else if("source".equals(level[x][y])){
-
-                    button.setIcon(scaledSource);
-                    baseIcons[x][y] = scaledSource;
-                    pipes[x][y].setShape("x");
-                }else if("L".equals(level[x][y])){
-
-                    button.setIcon(scaledLPipe);
-                    baseIcons[x][y] = scaledLPipe;
+                ImageIcon baseIcon = null; // track which base image this cell uses
+                if ("sink".equals(level[x][y])) {
+                    pipes[x][y].setShape("O");
+                    baseIcon = scaledSink;
+                } else if ("source".equals(level[x][y])) {
+                    pipes[x][y].setShape("X");
+                    baseIcon = scaledSource;
+                } else if ("L".equals(level[x][y])) {
                     pipes[x][y].setShape("L");
-                }else if("I".equals(level[x][y])){
-
-                    button.setIcon(scaledIPipe);
-                    baseIcons[x][y] = scaledIPipe;
+                    baseIcon = scaledLPipe;
+                } else if ("I".equals(level[x][y])) {
                     pipes[x][y].setShape("I");
-                }else if("T".equals(level[x][y])){
-
-                    button.setIcon(scaledTPipe);
-                    baseIcons[x][y] = scaledTPipe;
+                    baseIcon = scaledIPipe;
+                } else if ("T".equals(level[x][y])) {
                     pipes[x][y].setShape("T");
+                    baseIcon = scaledTPipe;
                 }
 
-                //pipes[x][y].setRotation(randomDirection);
+                baseIcons[x][y] = baseIcon;
+                updateButtonIcon(button, pipes[x][y], baseIcon); // render at the correct random rotation immediately
 
                 button.setPreferredSize(buttonSize);
                 gridPanel.add(button);
@@ -243,6 +233,17 @@ public class gamePanel extends JPanel implements ActionListener
             JOptionPane.showMessageDialog(this, "You win! All sinks have water.");
             System.out.println("win");
 
+        }else{
+            printGridConnections();
+            explainSink(0, 6);
+            explainSink(1, 4);
+            explainSink(1, 6);
+            explainSink(2, 0);
+            explainSink(3, 6);
+            explainSink(5, 1);
+            explainSink(6, 2);
+            explainSink(6, 3);
+            explainSink(6, 5);
         }
     }    
 
@@ -260,12 +261,10 @@ public class gamePanel extends JPanel implements ActionListener
         button.setIcon(new ImageIcon(buffered));
     }
 
-    // Somewhere central, e.g. in gamePanel or a new WinChecker class
     public boolean checkWin() {
         boolean[][] visited = new boolean[GRID_SIZE][GRID_SIZE];
         int sourceX = -1, sourceY = -1;
 
-        // find the source
         outer:
         for (int x = 0; x < GRID_SIZE; x++) {
             for (int y = 0; y < GRID_SIZE; y++) {
@@ -275,19 +274,23 @@ public class gamePanel extends JPanel implements ActionListener
                 }
             }
         }
-        if (sourceX == -1) return false; // no source found
+        System.out.println("source at " + sourceX + "," + sourceY);
+        if (sourceX == -1) return false;
 
-        floodFill(sourceX, sourceY, visited);
-
-        // check every sink was visited
+        //floodFill(sourceX, sourceY, visited);
+        floodFillDebug(sourceX, sourceY, visited);
+        
+        
+        boolean allConnected = true;
         for (int x = 0; x < GRID_SIZE; x++) {
             for (int y = 0; y < GRID_SIZE; y++) {
-                if ("O".equals(pipes[x][y].getShape()) && !visited[x][y]) {
-                    return false; // a sink wasn't reached
+                if ("O".equals(pipes[x][y].getShape())) {
+                    System.out.println("sink (" + x + "," + y + ") visited=" + visited[x][y]);
+                    if (!visited[x][y]) allConnected = false;
                 }
             }
         }
-        return true;
+        return allConnected;
     }
 
     private void floodFill(int x, int y, boolean[][] visited) {
@@ -312,6 +315,72 @@ public class gamePanel extends JPanel implements ActionListener
         // West neighbor: same row, column to the left → y - 1
         if (conn[3] && y > 0 && pipes[x][y-1].getConnections()[1]) {
             floodFill(x, y - 1, visited);
+        }
+    }
+
+    private void floodFillDebug(int x, int y, boolean[][] visited) {
+        if (x < 0 || x >= GRID_SIZE || y < 0 || y >= GRID_SIZE) return;
+        if (visited[x][y]) return;
+        visited[x][y] = true;
+        System.out.println("visit (" + x + "," + y + ") shape=" + pipes[x][y].getShape()
+            + " rot=" + pipes[x][y].getRotation());
+
+        boolean[] conn = pipes[x][y].getConnections();
+        String[] dirs = {"N", "E", "S", "W"};
+        int[] dx = {-1, 0, 1, 0};
+        int[] dy = {0, 1, 0, -1};
+        int[] opp = {2, 3, 0, 1};
+
+        for (int i = 0; i < 4; i++) {
+            if (!conn[i]) continue;
+            int nx = x + dx[i], ny = y + dy[i];
+            if (nx < 0 || nx >= GRID_SIZE || ny < 0 || ny >= GRID_SIZE) continue;
+            boolean back = pipes[nx][ny].getConnections()[opp[i]];
+            if (back) {
+                floodFillDebug(nx, ny, visited);
+            } else {
+                System.out.println("  BLOCKED " + dirs[i] + " -> (" + nx + "," + ny + ") shape="
+                    + pipes[nx][ny].getShape() + " rot=" + pipes[nx][ny].getRotation());
+            }
+        }
+    }
+
+    public void printGridConnections() {
+        String[] dirs = {"N", "E", "S", "W"};
+        for (int x = 0; x < GRID_SIZE; x++) {
+            for (int y = 0; y < GRID_SIZE; y++) {
+                Pipe p = pipes[x][y];
+                boolean[] conn = p.getConnections();
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < 4; i++) {
+                    if (conn[i]) sb.append(dirs[i]).append(" ");
+                }
+                System.out.printf("(%d,%d) shape=%s rot=%d open=[%s]%n",
+                    x, y, p.getShape(), p.getRotation(), sb.toString().trim());
+            }
+        }
+    }
+
+    public void explainSink(int x, int y) {
+        String[] dirs = {"N", "E", "S", "W"};
+        int[] dx = {-1, 0, 1, 0};
+        int[] dy = {0, 1, 0, -1};
+        int[] opp = {2, 3, 0, 1}; // opposite direction index
+
+        boolean[] conn = pipes[x][y].getConnections();
+        System.out.println("Sink (" + x + "," + y + ") rot=" + pipes[x][y].getRotation());
+        for (int i = 0; i < 4; i++) {
+            if (!conn[i]) continue;
+            int nx = x + dx[i], ny = y + dy[i];
+            System.out.print("  opening " + dirs[i] + " -> ");
+            if (nx < 0 || nx >= GRID_SIZE || ny < 0 || ny >= GRID_SIZE) {
+                System.out.println("edge of grid (dead end)");
+                continue;
+            }
+            Pipe neighbor = pipes[nx][ny];
+            boolean matches = neighbor.getConnections()[opp[i]];
+            System.out.println("neighbor (" + nx + "," + ny + ") shape=" + neighbor.getShape()
+                + " rot=" + neighbor.getRotation() + " facing back=" + matches);
         }
     }
 
