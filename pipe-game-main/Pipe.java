@@ -1,9 +1,11 @@
-
 /**
  * Write a description of class Pipe here.
+ * 
+ * class for creating pipe objects
+ * getters and setters and logic for finding where pipe openings are
  *
- * @author (your name)
- * @version (a version number or a date)
+ * @author Clement Ausseil
+ * @version Final version 14/08/2026
  */
 public class Pipe
 {
@@ -11,7 +13,6 @@ public class Pipe
     int xPosition;
     int yPosition;
     int rotation; //in degrees (0,90,180,270)
-    String type;//pipe, source or sink
     /**
      * Constructor for objects of class Pipe
      */
@@ -21,7 +22,6 @@ public class Pipe
         this.xPosition = x;
         this.yPosition = y;
         this.rotation = rotation;
-        //this.type = type;
     }
 
     //# Getter methods
@@ -32,7 +32,6 @@ public class Pipe
     public int getX(){return(this.xPosition);}
 
     public int getY(){return(this.yPosition);}
-    //public String getType(){return(this.type);}
 
     //# Setter methods
     public void setShape(String newShape){this.shape=newShape;}
@@ -43,23 +42,33 @@ public class Pipe
 
     public void setRotation(int newRotation){this.rotation=newRotation;}
 
+    //method that changes the rotation
     public void rotate(){
         this.rotation = (this.rotation+90)%360;
+        //adds 90° dregrees, meaning quarter turn clockwise
+        //'%' resets when rotation gets to 360°, back to 0°
     }
 
-    public boolean[] getConnections() {
+    /*
+     * method to define where the pipe openings are for different shapes
+     */
+    public boolean[] getOpenings() {
+        //start with unrotated pipe (0°)
         boolean[] base;
         // Order: N, E, S, W
+        //true = opening
         switch (shape) {
-            case "I": base = new boolean[]{false, true, false, true}; break;   // N-S
-            case "L": base = new boolean[]{false, true, true, false}; break;  // N-E
-            case "T": base = new boolean[]{true, true, false, true}; break;   // N-E-S
-            case "O": base = new boolean[]{true, false, false, false}; break; // sink: 1 opening
-            case "X": base = new boolean[]{true, true, false, true}; break; // source: 1 opening
+            case "I": base = new boolean[]{false, true, false, true}; break;   
+            case "L": base = new boolean[]{false, true, true, false}; break;  
+            case "T": base = new boolean[]{true, true, false, true}; break;  
+            case "O": base = new boolean[]{true, false, false, false}; break; 
+            case "X": base = new boolean[]{true, true, false, true}; break; 
             default: base = new boolean[]{false, false, false, false};
         }
         int shift = rotation / 90; // how many 90° steps
         boolean[] rotated = new boolean[4];
+        //rotating the pipe is the same as shifting the array values over
+        //{f,f,t,t} --> {t,f,f,t}
         for (int i = 0; i < 4; i++) {
             rotated[(i + shift) % 4] = base[i];
         }

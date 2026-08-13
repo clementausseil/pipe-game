@@ -1,7 +1,11 @@
 /**
+ * Write a description of class GUI here. 
  * 
- * @author 
- * @version (a version number or a date)
+ * creates GUI window, runs JFrame, menu and menuBar, and calls gamePanel
+ * 
+ * 
+ * @author Clement Ausseil
+ * @version Final version 14/08/2026
  */
 import javax.swing.*;
 import java.awt.*;
@@ -10,21 +14,19 @@ import javax.swing.JButton;
 import java.util.Random;
 
 import java.awt.Graphics;
-public class GUI extends JFrame implements ActionListener,MouseListener
+public class GUI extends JFrame implements ActionListener
 {
     public final int GRID_SIZE = 7;
     public final int SQUARE_SIZE = 80;
-    
+
     int[][] grid = new int[GRID_SIZE][GRID_SIZE];
-    
+
     public String[][] level1 = new String[8][8];
-    
+
     public int[] rotations = {0,90,180,270};
-    
+
     gamePanel panel = new gamePanel();
-    
-    
-    
+
     JMenuBar menuBar;
     JMenu menu;
     JMenuItem menuItemStory;
@@ -32,8 +34,7 @@ public class GUI extends JFrame implements ActionListener,MouseListener
 
     JPanel gridPanel;
     JPanel borderPanel;
-    
-    
+
     /**
      * Constructor for objects of class GUI
      */
@@ -43,12 +44,13 @@ public class GUI extends JFrame implements ActionListener,MouseListener
         setTitle("Wellington Water Woes");       
         this.getContentPane().setPreferredSize(new Dimension(800,800));
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+
         //creating the menuBar
         menuBar = new JMenuBar();
         this.setJMenuBar(menuBar);
+
         //creating the "info" menu
         menu = new JMenu("?");
-        //menu.addActionListener(this);
         menuBar.add(menu);
 
         //adding the menu items
@@ -59,37 +61,18 @@ public class GUI extends JFrame implements ActionListener,MouseListener
         menu.add(menuItemStory);
         menu.add(menuItemTuto);
 
-        //mouse listener
-        addMouseListener(this);
-
-        // JFrame frame = new JFrame ("cuh");
-        // frame.setSize(600, 400);
-        // frame.setLayout(null);
-
         //panels
-        
         this.add(panel);
 
-        //declare images
-        
-        
-        
         //dunno what this does but I guess its important
         this.pack();
         this.toFront();
         this.setVisible(true);
     }
 
-    public void mouseEntered(MouseEvent e){/*System.out.println("enter");*/}
-    public void mouseExited(MouseEvent e){/*System.out.println("exit");*/}
-    public void mousePressed(MouseEvent e){/*System.out.println("press");*/}
-    public void mouseReleased(MouseEvent e){/*System.out.println("release");*/}
-    public void mouseClicked(MouseEvent e){
-        int mouseX = e.getX();
-        int mouseY = e.getY();
-        System.out.println("click at"+mouseX+","+mouseY);
-    }
-
+    /*
+     * method for actions (when menus are clicked)
+     */
     public void actionPerformed(ActionEvent e){
         String cmd = e.getActionCommand();
         System.out.println(cmd);
@@ -98,13 +81,11 @@ public class GUI extends JFrame implements ActionListener,MouseListener
         }else if (cmd.equals("tutorial")){
             createTutoDialogBox();
         }
-        //else {
-            //String[] coords = e.getActionCommand().split(",");
-            //System.out.println("button pressed at "+coords[0]+","+ coords[1]);
-        //}
     }
-    
-    
+
+    /*
+     * creating the dialog box for story line
+     */
     void createStoryDialogBox(){
         //creating dialog box
         JDialog box =new JDialog(this);
@@ -120,6 +101,9 @@ public class GUI extends JFrame implements ActionListener,MouseListener
         box.setTitle("backround info");
     }
 
+    /*
+     * creating the dialog box for tutorial
+     */
     void createTutoDialogBox(){
         //creating dialog box
         JDialog box =new JDialog(this);
@@ -133,21 +117,4 @@ public class GUI extends JFrame implements ActionListener,MouseListener
         box.setVisible(true);
         box.setTitle("how to play");
     }
-    
-
-    public void paint(Graphics g){
-        super.paint(g);
-        Graphics2D g2d = (Graphics2D)g.create();
-        
-        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-        
-        
-        
-        
-    }
-    
-    void rotateRandom(){
-        //.rotate(Math.toRadians(randomDirection),imageCenter,imageCenter);
-    }
-    
 }

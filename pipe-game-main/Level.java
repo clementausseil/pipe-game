@@ -1,14 +1,15 @@
-
 /**
  * Write a description of class level here.
+ * 
+ * class for creating level objects
  *
- * @author (your name)
- * @version (a version number or a date)
+ * @author Clement Ausseil
+ * @version Final version 14/08/2026
  */
 public class Level
 {
     private String[][] layout;
-    
+
     public Level(String [][] layout)
     {
         this.layout = layout;
@@ -17,11 +18,8 @@ public class Level
     public String[][] getLayout(){
         return(this.layout);
     }
-    
+
     public void setLayout(String[][] newLayout){
         this.layout = newLayout;
-    }
-    
-    
-    
+    } 
 }
