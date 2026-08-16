@@ -66,7 +66,7 @@ public class gamePanel extends JPanel implements ActionListener
         ImageIcon TPipeImage = new ImageIcon(TPipe);
         TPipeLabel = new JLabel(TPipeImage);
 
-        backgroundImage = new ImageIcon("dirt.jpg").getImage();
+        backgroundImage = new ImageIcon("conc.jpg").getImage();
 
         Level level1 = new Level(initialiseLevel1());
         grid(level1.getLayout());
